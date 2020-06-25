@@ -52,7 +52,6 @@ leaflet() %>% addTiles() %>%
 
 ## Code
 
-### Map
 ```{r map_code, echo=TRUE, eval=FALSE}
 library(leaflet)
 
@@ -62,9 +61,8 @@ leaflet() %>% addTiles() %>%
                    popup = covidPL$text, color = covidPL$over1000_col)
 ```
 
-## Code
+***
 
-### Data
 ```{r data_code, echo=TRUE, eval=FALSE}
 covidPL <- structure(list(voivodeship = c("Zachodniopomorskie", "Pomorskie", 
 "Warmińsko-Mazurskie", "Podlaskie", "Lubuskie", "Wielkopolskie", 
