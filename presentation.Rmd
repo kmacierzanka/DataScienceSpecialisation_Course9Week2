@@ -1,0 +1,92 @@
+---
+title: "Coronovirus Cases in Poland"
+date: "25th June 2020"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+```
+
+***
+I am from Poland where the response to the current coronavirus pandemic has not been exemplary.
+
+This presentation will take data about the total (active, recovered and deaths) numbers of coronavirus cases in each region in Poland (these regions are called *voivodeships*). The data is accurate as of **24.6.20** and was accessed [here](https://www.arcgis.com/apps/opsdashboard/index.html#/deaceebc69a3412c8b7699e3e025e213).
+
+## Data
+
+```{r data}
+covidPL <- data.frame(
+        voivodeship = c("Zachodniopomorskie", "Pomorskie", "Warmińsko-Mazurskie", "Podlaskie",
+                        "Lubuskie", "Wielkopolskie", "Kujawsko-Pomorskie", "Mazowieckie",
+                        "Dolnośląskie", "Opolskie", "Łódzkie", "Świętokrzyskie",
+                        "Śląskie", "Małopolskie", "Podkarpackie", "Lubelskie"),
+        total_cases = c(603, 643, 223, 749,
+                        145, 2518, 653, 4832,
+                        2878, 866, 2957, 742,
+                        12192, 1629, 577, 614),
+        lat = c(53.678654, 54.167519, 53.980712, 53.453234,
+                52.250908, 52.380430, 53.112072, 52.210249,
+                51.050726, 50.649687, 51.666005, 50.844527,
+                50.186214, 49.953066, 49.972899, 51.161765),
+        lng = c(15.847424, 17.805124, 21.519261, 22.730214,
+                15.480937, 16.887587, 18.360641, 20.893767,
+                16.634604, 17.813637, 19.351581, 20.771655,
+                19.001116, 20.258679, 21.979469, 22.604713))
+covidPL$text <- paste0(covidPL$voivodeship, ", Total Cases: ", covidPL$total_cases)
+covidPL$over1000_col <- ifelse(covidPL$total_cases > 1000, "red", "blue")
+covidPL[, 1:4]
+```
+
+## Map
+
+This map displays the total number of cases for each voivodeship. The size of the circle corresponds to the total number of cases. If the circle is red then this voivodeship has > 1000 cases. The code can be viewed on the next slide.
+
+```{r map}
+library(leaflet)
+
+leaflet() %>% addTiles() %>%
+        addCircles(lat = covidPL$lat, lng = covidPL$lng, radius = 10*covidPL$total_cases,
+                   popup = covidPL$text, color = covidPL$over1000_col)
+```
+
+## Code
+
+### Map
+```{r map_code, echo=TRUE, eval=FALSE}
+library(leaflet)
+
+leaflet() %>% addTiles() %>%
+        addCircles(lat = covidPL$lat, lng = covidPL$lng,
+                   radius = 10*covidPL$total_cases,
+                   popup = covidPL$text, color = covidPL$over1000_col)
+```
+
+## Code
+
+### Data
+```{r data_code, echo=TRUE, eval=FALSE}
+covidPL <- structure(list(voivodeship = c("Zachodniopomorskie", "Pomorskie", 
+"Warmińsko-Mazurskie", "Podlaskie", "Lubuskie", "Wielkopolskie", 
+"Kujawsko-Pomorskie", "Mazowieckie", "Dolnośląskie", "Opolskie", 
+"Łódzkie", "Świętokrzyskie", "Śląskie", "Małopolskie", 
+"Podkarpackie", "Lubelskie"), total_cases = c(603, 643, 223, 
+749, 145, 2518, 653, 4832, 2878, 866, 2957, 742, 12192, 1629, 
+577, 614), lat = c(53.678654, 54.167519, 53.980712, 53.453234, 
+52.250908, 52.38043, 53.112072, 52.210249, 51.050726, 50.649687, 
+51.666005, 50.844527, 50.186214, 49.953066, 49.972899, 51.161765
+), lng = c(15.847424, 17.805124, 21.519261, 22.730214, 15.480937, 
+16.887587, 18.360641, 20.893767, 16.634604, 17.813637, 19.351581, 
+20.771655, 19.001116, 20.258679, 21.979469, 22.604713), text = c("Zachodniopomorskie, Total Cases: 603", 
+"Pomorskie, Total Cases: 643", "Warmińsko-Mazurskie, Total Cases: 223", 
+"Podlaskie, Total Cases: 749", "Lubuskie, Total Cases: 145", 
+"Wielkopolskie, Total Cases: 2518", "Kujawsko-Pomorskie, Total Cases: 653", 
+"Mazowieckie, Total Cases: 4832", "Dolnośląskie, Total Cases: 2878", 
+"Opolskie, Total Cases: 866", "Łódzkie, Total Cases: 2957", 
+"Świętokrzyskie, Total Cases: 742", "Śląskie, Total Cases: 12192", 
+"Małopolskie, Total Cases: 1629", "Podkarpackie, Total Cases: 577", 
+"Lubelskie, Total Cases: 614"), over1000_col = c("blue", "blue", 
+"blue", "blue", "blue", "red", "blue", "red", "red", "blue", 
+"red", "blue", "red", "red", "blue", "blue")), row.names = c(NA, 
+-16L), class = "data.frame")
+```
