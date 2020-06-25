@@ -1,0 +1,23 @@
+---
+title: "mtcars Interactive Histogram"
+date: "25th June 2020"
+output: ioslides_presentation
+---
+
+## Data
+
+```{r plot, echo=FALSE, message=FALSE}
+library(plotly)
+
+plot_ly(data = mtcars, x = ~mpg,
+        type = "histogram", color = ~as.factor(cyl))
+```
+
+## Code
+
+```{r plot_code, eval=FALSE}
+library(plotly)
+
+plot_ly(data = mtcars, x = ~mpg,
+        type = "histogram", color = ~as.factor(cyl))
+```
